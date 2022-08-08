@@ -1,4 +1,4 @@
-# Ansible Test Network Connectivity
+# Ansible Network Connectivity
 
 ## Run Ansible
 
