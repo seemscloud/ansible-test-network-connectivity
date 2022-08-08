@@ -1,0 +1,6 @@
+- include_tasks: api.yaml
+  tags: [ api, verbose ]
+- include_tasks: tcp.yaml
+  tags: [ tcp ]
+- include_tasks: ports.yaml
+  tags: [ ports ]

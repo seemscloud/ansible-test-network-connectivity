@@ -1,0 +1,11 @@
+---
+- hosts: openvpn
+  gather_facts: yes
+
+  tasks:
+    - include_role:
+        name: tests
+      vars:
+        tcp_tests: "{{ openvpn.tcp | flatten }}"
+        api_tests: "{{ openvpn.api | flatten }}"
+      tags: [ api, tcp, verbose, ports ]

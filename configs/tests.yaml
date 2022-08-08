@@ -1,0 +1,29 @@
+general:
+  ipify:
+    api:
+      - name: "Check my IP (JSON)"
+        url: https://api.ipify.org:443?format=json
+      - name: "Check my IP (PLAIN)"
+        url: https://api.ipify.org:443?format=plain
+    tcp:
+      - host: api.ipify.org
+        port: 80
+        state: started
+      - host: api.ipify.org
+        port: 443
+        state: started
+  ssh:
+    tcp:
+      - host: localhost
+        port: 22
+        state: started
+  openvpn:
+    tcp: [ ]
+
+openvpn:
+  tcp:
+    - "{{ general.ipify.tcp }}"
+    - "{{ general.ssh.tcp }}"
+    - "{{ general.openvpn.tcp }}"
+  api:
+    - "{{ general.ipify.api }}"

@@ -1,0 +1,16 @@
+---
+- name: Test TCP Port
+  wait_for:
+    host: "{{ item.host | default('localhost') }}"
+    port: "{{ item.port | default(8080) }}"
+    state: "{{ item.state | default('started') }}"
+    delay: "{{ item.delay | default(0) }}"
+    timeout: "{{ item.timeout | default(3) }}"
+  ignore_errors: yes
+  register: results
+  with_flattened:
+    - "{{ tcp_tests }}"
+  loop_control:
+    label: "{{ item.host }}:{{ item.port }} ({{ item.state }}) #{{ iter }}"
+    index_var: iter
+  tags: [ tcp ]

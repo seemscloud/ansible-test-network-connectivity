@@ -1,0 +1,27 @@
+---
+- name: Test API Endpoint
+  uri:
+    method: "{{ item.method | default('GET') }}"
+    url: "{{ item.url }}"
+    body_format: "{{ item.body_format | default('raw') }}"
+    body: "{{ item.body | default(omit) }}"
+    status_code: "{{ item.status_code | default(200) }}"
+    return_content: "{{ item.return_content | default('yes') }}"
+    user: "{{ item.user | default(omit) }}"
+    password: "{{ item.password | default(omit) }}"
+    force_basic_auth: "{{ item.force_basic_auth | default('yes') }}"
+  register: results
+  with_items: "{{ api_tests }}"
+  loop_control:
+    label: "{{ item.name }} #{{ iter }}"
+    index_var: iter
+  ignore_errors: yes
+  tags: [ api ]
+
+- name: Print response
+  debug:
+    msg: "{{ item.content }}"
+  with_items: "{{ results.results }}"
+  when: item.content is defined
+  ignore_errors: yes
+  tags: [ verbose ]

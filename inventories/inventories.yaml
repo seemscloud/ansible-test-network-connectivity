@@ -1,0 +1,14 @@
+all:
+  vars:
+    ansible_user: terraform
+    ansible_connection: ssh
+    ansible_python_interpreter: python3
+  children:
+    openvpn:
+      vars:
+        allowed_ports:
+          tcp: [ 22, 53 ]
+          udp: [ 53, 68, 323 ]
+      hosts:
+        vpn01:
+          ansible_host: 35.224.16.177

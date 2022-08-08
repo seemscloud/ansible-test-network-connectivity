@@ -1,0 +1,25 @@
+- name: Gather Facts on Listening Ports
+  listen_ports_facts:
+  tags: [ ports ]
+
+- name: TCP Whitelist Violation
+  debug:
+    msg: TCP port {{ item.port }} violates the whitelist
+  vars:
+    port_violations: "{{ ansible_facts.tcp_listen | rejectattr('port', 'in', allowed_ports.tcp) | list }}"
+  with_items: "{{ port_violations }}"
+  when: allowed_ports.tcp is defined
+  failed_when: port_violations | length > 0
+  ignore_errors: yes
+  tags: [ ports ]
+
+- name: UDP Whitelist Violation
+  debug:
+    msg: UDP port {{ item.port }} violates the whitelist
+  vars:
+    port_violations: "{{ ansible_facts.udp_listen | rejectattr('port', 'in', allowed_ports.udp) | list }}"
+  with_items: "{{ port_violations }}"
+  when: allowed_ports.udp is defined
+  failed_when: port_violations | length > 0
+  ignore_errors: yes
+  tags: [ ports ]
